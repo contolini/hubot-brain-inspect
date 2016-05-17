@@ -7,6 +7,7 @@
 #   hubot brain show users - Display all users that hubot knows about
 
 util = require "util"
+gist = require "quick-gist"
 
 getArgParams = (arg) ->
     key_capture = /--key=(.*?)( |$)/.exec(arg)
@@ -29,7 +30,12 @@ module.exports = (robot) ->
         data = data[key]
 
     output = util.inspect(data, false, null)
-    msg.send output
+    if output.length < 1000
+      msg.send output
+    else
+      gist {content: output}, (err, resp, data) ->
+        url = data.html_url
+        msg.send "I'm listening for the following items: " + url
 
   robot.respond /brain show users$/i, (msg) ->
     response = ""
@@ -39,4 +45,9 @@ module.exports = (robot) ->
       response += " <#{user.email_address}>" if user.email_address
       response += "\n"
 
-    msg.send response
+    if response.length < 1000
+      msg.send response
+    else
+      gist {content: response}, (err, resp, data) ->
+        url = data.html_url
+        msg.send "I'm listening for the following items: " + url
