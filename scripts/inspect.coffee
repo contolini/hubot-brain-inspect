@@ -50,4 +50,4 @@ module.exports = (robot) ->
     else
       gist {content: response}, (err, resp, data) ->
         url = data.html_url
-        msg.send "I'm listening for the following items: " + url
+        msg.send "Brain dump: " + url
