@@ -30,12 +30,12 @@ module.exports = (robot) ->
         data = data[key]
 
     output = util.inspect(data, false, null)
-    if output.length < 1000
+    if output.length < 4000
       msg.send output
     else
       gist {content: output}, (err, resp, data) ->
         url = data.html_url
-        msg.send "I'm listening for the following items: " + url
+        msg.send "Brain dump: " + url
 
   robot.respond /brain show users$/i, (msg) ->
     response = ""
@@ -45,7 +45,7 @@ module.exports = (robot) ->
       response += " <#{user.email_address}>" if user.email_address
       response += "\n"
 
-    if response.length < 1000
+    if response.length < 4000
       msg.send response
     else
       gist {content: response}, (err, resp, data) ->
